@@ -21,6 +21,18 @@ stop(){
 }
 
 start(){
+
+	CONSUL=$(docker run \
+		-p 8400:8400 \
+		-p 8500:8500 \
+		-p 8600:53/udp \
+		-h node1 \
+		progrium/consul  \
+		-server \
+		-bootstrap
+	)
+	echo "Started CONSUL in container $CONSUL"
+
 	mkdir -p $APPS/zookeeper/data
 	mkdir -p $APPS/zookeeper/logs
 	sudo docker rm -f zookeeper > /dev/null 2>&1 | true 
@@ -28,8 +40,9 @@ start(){
 		-d \
 		-p 2181:2181 \
 		-v $APPS/zookeeper/logs:/logs \
-		-name zookeeper \
-		relateiq/zookeeper)
+		--name zookeeper \
+		-h zookeeper \
+		trickbooter/zookeeper)
 	echo "Started ZOOKEEPER in container $ZOOKEEPER"
 
 	mkdir -p $APPS/cassandra/data
