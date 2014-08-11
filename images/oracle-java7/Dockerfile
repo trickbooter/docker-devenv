@@ -12,8 +12,3 @@ RUN apt-get update
 RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
 RUN apt-get install -y oracle-java7-installer unzip
 
-# Prepare Consul
-RUN cd /opt && wget https://dl.bintray.com/mitchellh/consul/*_linux_amd64.zip
-RUN cd /opt && unzip *_linux_amd64.zip -d /opt/consul
-RUN rm /opt/*.zip
-
