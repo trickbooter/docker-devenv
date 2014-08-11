@@ -23,6 +23,7 @@ stop(){
 start(){
 
 	CONSUL=$(docker run \
+		-d \
 		-p 8400:8400 \
 		-p 8500:8500 \
 		-p 8600:53/udp \
@@ -48,6 +49,7 @@ start(){
 	mkdir -p $APPS/cassandra/data
 	mkdir -p $APPS/cassandra/logs
 	CASSANDRA=$(docker run \
+		-d \
 		-p 7000:7000 \
 		-p 7001:7001 \
 		-p 7199:7199 \
@@ -55,7 +57,6 @@ start(){
 		-p 9042:9042 \
 		-v $APPS/cassandra/data:/data \
 		-v $APPS/cassandra/logs:/logs \
-		-d \
 		relateiq/cassandra)
 	echo "Started CASSANDRA in container $CASSANDRA"
 
@@ -67,14 +68,14 @@ start(){
 		-p 9092:9092 \
 		-v $APPS/kafka/data:/data \
 		-v $APPS/kafka/logs:/logs \
-		-name kafka \
-		-link zookeeper:zookeeper \
+		--name kafka \
+		--link zookeeper:zookeeper \
 		relateiq/kafka)
 	echo "Started KAFKA in container $KAFKA"
 
 	SHIPYARD=$(docker run \
-		-p 8005:8000 \
 		-d \
+		-p 8005:8000 \
 		shipyard/shipyard)
 
 	sleep 1
