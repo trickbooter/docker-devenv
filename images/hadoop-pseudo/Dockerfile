@@ -6,7 +6,7 @@ MAINTAINER trickbooter (paul@trickbooter.com)
 ENV TERM linux
 
 RUN apt-get update
-RUN apt-get install -y rsync ssh tar wget
+RUN apt-get install -y rsync ssh tar wget supervisor
 
 # Apache Hadoop
 ENV SRC_DIR /opt
@@ -42,7 +42,7 @@ ADD conf/core-site.xml $HADOOP_PREFIX/etc/hadoop/core-site.xml
 ADD conf/hdfs-site.xml $HADOOP_PREFIX/etc/hadoop/hdfs-site.xml
 ADD conf/yarn-site.xml $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 ADD conf/mapred-site.xml $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
-RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/local/jdk:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+#RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=$JAVA_HOME:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
 # Native
 # https://gist.github.com/ruo91/7154697#comment-936487
@@ -69,7 +69,7 @@ RUN sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 RUN echo 'SSHD: ALL' >> /etc/hosts.allow
 
 # Root password
-RUN echo 'root:hadoop' |chpasswd
+#RUN echo 'root:hadoop' |chpasswd
 
 # Port
 EXPOSE 22 8030 8031 8032 8033 8040 8042 8088 9000 50010 50020 50070 50075 50090
