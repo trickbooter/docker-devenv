@@ -2,7 +2,7 @@
 
 **- Container run**
 
-    root@ruo91:~# docker run -d -P --name="Hadoop" -h "hadoop" ruo91/hadoop:2.4.1
+    root@ruo91:~# docker run -d -P --name="Hadoop" -h "hadoop" trickbooter/hadoop
 
 **- SSH login**
 
