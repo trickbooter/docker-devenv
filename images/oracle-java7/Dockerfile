@@ -14,3 +14,4 @@ RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true 
 RUN apt-get install -y oracle-java7-installer unzip
 
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle/
+ENV PATH $PATH:$JAVA_HOME/bin
