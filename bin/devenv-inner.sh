@@ -59,6 +59,18 @@ start(){
 		-v $APPS/cassandra/logs:/logs \
 		relateiq/cassandra)
 	echo "Started CASSANDRA in container $CASSANDRA"
+	
+	
+	#mkdir -p $APPS/elasticsearch/data
+	#mkdir -p $APPS/elasticsearch/logs
+	#ELASTICSEARCH=$(docker run \
+	#	-d \
+	#	-p 9200:9200 \
+	#	-p 9300:9300 \
+	#	-v $APPS/elasticsearch/data:/data \
+	#	-v $APPS/elasticsearch/logs:/logs \
+	#	trickbooter/elasticsearch)
+	#echo "Started ELASTICSEARCH in container $ELASTICSEARCH"
 
 	mkdir -p $APPS/kafka/data
 	mkdir -p $APPS/kafka/logs

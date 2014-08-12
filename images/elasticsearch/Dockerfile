@@ -1,4 +1,4 @@
-FROM relateiq/oracle-java7
+FROM trickbooter/oracle-java7
 
 # elasticsearch
 RUN apt-get update
