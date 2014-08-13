@@ -9,7 +9,6 @@ ENV TERM linux
 RUN apt-get update
 RUN apt-get install -y rsync tar wget
 
-
 # Apache Hadoop Common Env
 ENV SRC_DIR /usr/local
 ENV HADOOP_VERSION hadoop-2.4.1
@@ -53,12 +52,14 @@ RUN echo 'export PATH=$PATH' >> /etc/profile
 
 # Edit Hadoop JAVA_HOME
 RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=$JAVA_HOME:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+RUN sed -i '/^export HADOOP_HOME/ s:.*:export HADOOP_HOME=$HADOOP_PREFIX:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+RUN sed -i '/^export HADOOP_CONF_DIR/ s:.*:export HADOOP_CONF_DIR=$HADOOP_CONF_DIR:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
 # Native Libraries
 # Note, these are build from the Dockerfile hadoop-build
 RUN rm $HADOOP_PREFIX/lib/native/*
 RUN cd $SRC_DIR && \ 
-    wget http://dl.bintray.com/trickbooter/generic/hadoop-native-libs-x64/2.4.1/hadoop-native-libs.tar.gz && \
+    wget http://dl.bintray.com/trickbooter/generic/hadoop-native-libs-x64-2.4.1.tar.gz && \
     tar xzvf hadoop-native-libs.tar.gz -C $HADOOP_PREFIX/lib/native
 RUN cd $SRC_DIR && rm -f hadoop-native-libs.tar.gz
 

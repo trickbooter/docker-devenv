@@ -12,17 +12,28 @@ ENV M2_HOME /usr/share/apache-maven-3.2.1
 ENV PATH $PATH:$M2_HOME/bin
 
 # hadoop
-RUN curl -s http://www.eu.apache.org/dist/hadoop/common/hadoop-2.4.1/hadoop-2.4.1-src.tar.gz | tar -xz -C /tmp/
+RUN curl http://www.eu.apache.org/dist/hadoop/common/hadoop-2.4.1/hadoop-2.4.1-src.tar.gz | tar -xz -C /tmp/
 
 # protoc -ohhh
 RUN curl https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2 | bunzip2|tar -x -C /tmp
 RUN cd /tmp/protobuf-2.5.0 && ./configure
 RUN cd /tmp/protobuf-2.5.0 && make && make install
 ENV LD_LIBRARY_PATH /usr/local/lib
-ENV export LD_RUN_PATH /usr/local/lib
+ENV LD_RUN_PATH /usr/local/lib
 
 # build native libs
-RUN cd /tmp/hadoop-2.4.1-src && mvn package -Pdist,native -DskipTests -Dtar
+RUN cd /tmp/hadoop-2.4.1-src && mvn package -Dmaven.javadoc.skip=true -Pdist,native -DskipTests=true -Dtar
 
-# get bintray helper
-RUN curl -Lo /tmp/bintray-functions j.mp/bintray-functions && . /tmp/bintray-functions
+# tar native libs
+RUN cd /tmp/hadoop-2.4.1-src/hadoop-dist/target/hadoop-2.4.1/lib/native && tar cfvz /tmp/hadoop-native-libs-x64-2.4.1.tar.gz *
+
+# Stub env vars
+ENV BINTRAY_USER unknown
+ENV BINTRAY_KEY unknown
+
+# get bintray helper (using SequenceIQ's bintray functions)
+RUN curl -Lo /tmp/bintray-functions j.mp/bintray-functions
+
+# Add the bootstrap file
+ADD push-to-bintray.sh /tmp/push-to-bintray.sh
+RUN chmod +x /tmp/push-to-bintray.sh
