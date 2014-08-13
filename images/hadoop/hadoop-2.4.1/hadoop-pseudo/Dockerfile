@@ -3,11 +3,16 @@ MAINTAINER trickbooter (paul@trickbooter.com)
 
 RUN apt-get install -y openssh-server openssh-client rsync
 
-# Passwordless SSH
+# Setup Passwordless SSH cert
 RUN cd /root && ssh-keygen -t dsa -P '' -f "/root/.ssh/id_dsa" && \
     cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys && \
     chmod 644 /root/.ssh/authorized_keys
     
+# Configure SSH
+ADD ssh-config /root/.ssh/config
+RUN chmod 600 /root/.ssh/config
+RUN chown root:root /root/.ssh/config
+
 # Pseudo distributed add files (overwriting hadoop defaults)
 ADD core-site.xml.template $HADOOP_CONF_DIR/core-site.xml.template
 ADD yarn-site.xml.template $HADOOP_CONF_DIR/yarn-site.xml.template
@@ -17,11 +22,6 @@ ADD mapred-site.xml $HADOOP_CONF_DIR/mapred-site.xml
 # Pseudo distributed inject config
 RUN sed s/HOSTNAME/localhost/ $HADOOP_CONF_DIR/core-site.xml.template > $HADOOP_CONF_DIR/core-site.xml
 RUN sed s/HADOOP_HOME/\$HADOOP_HOME/ $HADOOP_CONF_DIR/yarn-site.xml.template > $HADOOP_CONF_DIR/yarn-site.xml
-
-# Configure SSH
-ADD ssh-config /root/.ssh/config
-RUN chmod 600 /root/.ssh/config
-RUN chown root:root /root/.ssh/config
 
 # Get a reference to our bootstrap file
 ENV BOOTSTRAP $HADOOP_PREFIX/bootstrap.sh
