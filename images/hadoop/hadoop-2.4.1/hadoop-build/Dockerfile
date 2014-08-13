@@ -11,3 +11,7 @@ ADD push-to-bintray.sh /opt/push-to-bintray.sh
 RUN chmod +x /opt/build-native-libs.sh
 RUN chmod +x /opt/push-to-bintray.sh
 
+
+
+# get bintray helper
+RUN curl -Lo /tmp/bintray-functions j.mp/bintray-functions && . /tmp/bintray-functions

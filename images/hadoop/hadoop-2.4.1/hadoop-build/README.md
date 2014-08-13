@@ -37,7 +37,7 @@ docker run -e /home/trickbooter/hnl:/data trickbooter/hadoop-build:2.4.1 /opt/bu
 ```
 
 ### To push the native libs to bintray
-I use a BinTray package called hadoop-native-libs-x64 and a version labelled 2.4.1.
+I use a BinTray package called hadoop-native-libs-x64 and a version labelled 2.4.1. [BinTray](https://bintray.com/trickbooter/generic/hadoop-native-libs-x64/view/files/hadoop-native-libs-x64/2.4.1)
 ```
 docker run -e BT_USER=[BinTray Username] BT_ACC=[BinTray Username] -e BT_APIKEY=[BinTray API Key] -e BT_REPO=[BinTray Repo] /opt/push-to-bintray.sh
 ```

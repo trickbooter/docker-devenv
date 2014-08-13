@@ -1,7 +1,6 @@
 FROM trickbooter/hadoop-base:2.4.1
 MAINTAINER trickbooter (paul@trickbooter.com)
 
-#ENV PATH $PATH:$JAVA_HOME/bin
 ENV HADOOP_PREFIX /usr/local/hadoop
 
 RUN sed -i '/^export JAVA_HOME/ s:.*:export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64\nexport HADOOP_PREFIX=/usr/local/hadoop\nexport HADOOP_HOME=/usr/local/hadoop\n:' $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
@@ -15,17 +14,14 @@ RUN cd /root && ssh-keygen -t dsa -P '' -f "/root/.ssh/id_dsa" && \
     chmod 644 /root/.ssh/authorized_keys
     
 # Pseudo distributed add files (overwriting hadoop defaults)
-ADD core-site.xml.template $HADOOP_CONF/core-site.xml.template
-ADD yarn-site.xml.template $HADOOP_PREFIX/etc/hadoop/yarn-site.xml.template
-ADD hdfs-site.xml $HADOOP_CONF/hdfs-site.xml
-ADD mapred-site.xml $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+ADD core-site.xml.template $HADOOP_CONF_DIR/core-site.xml.template
+ADD yarn-site.xml.template $HADOOP_CONF_DIR/yarn-site.xml.template
+ADD hdfs-site.xml $HADOOP_CONF_DIR/hdfs-site.xml
+ADD mapred-site.xml $HADOOP_CONF_DIR/mapred-site.xml
 
 # Pseudo distributed inject config
-RUN sed s/HOSTNAME/localhost/ $HADOOP_CONF/core-site.xml.template > $HADOOP_CONF/core-site.xml
-RUN sed s/HADOOP_HOME/$HADOOP_HOME/ $HADOOP_CONF/yarn-site.xml.template > $HADOOP_CONF/yarn-site.xml
-
-# Prepare the namenode
-RUN $HADOOP_PREFIX/bin/hdfs namenode -format
+RUN sed s/HOSTNAME/localhost/ $HADOOP_CONF_DIR/core-site.xml.template > $HADOOP_CONF_DIR/core-site.xml
+RUN sed s/HADOOP_HOME/\$HADOOP_HOME/ $HADOOP_CONF_DIR/yarn-site.xml.template > $HADOOP_CONF_DIR/yarn-site.xml
 
 # Configure SSH
 ADD ssh-config /root/.ssh/config

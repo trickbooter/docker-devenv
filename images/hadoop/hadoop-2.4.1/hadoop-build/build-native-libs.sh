@@ -40,5 +40,6 @@ tar cfvz hadoop-native-libs.tar.gz *
 
 # If our host has mounted a data directory, copy our libs to it
 if [ -d "/data" ]; then
+  echo "detected host mounted on /data, copying hadoop-native-libs.tar.gz"
   mv hadoop-native-libs.tar.gz /data
 fi
