@@ -23,23 +23,24 @@ stop(){
 start(){
 
 	# Note, this is a Jeff Lindsay project that I have forked
-	CONSUL=$(docker run --rm trickbooter/consul cmd:run 127.0.0.1 -it)
-	echo "Started CONSUL in container $CONSUL"
+	# Determine Docker0 Bridge IP
+	# CONSUL=$(docker run --rm trickbooter/consul cmd:run 127.0.0.1 -it)
+	# echo "Started CONSUL in container $CONSUL"
 
-	mkdir -p $APPS/zookeeper/data
-	mkdir -p $APPS/zookeeper/logs
-	sudo docker rm -f zookeeper > /dev/null 2>&1 | true 
+	mkdir -p $APP_DATA/zookeeper/data
+	mkdir -p $APP_DATA/zookeeper/logs
+	docker rm -f zookeeper > /dev/null 2>&1 | true 
 	ZOOKEEPER=$(docker run \
 		-d \
 		-p 2181:2181 \
-		-v $APPS/zookeeper/logs:/logs \
+		-v $APP_DATA/zookeeper/logs:/zookeeper/logs \
 		--name zookeeper \
 		-h zookeeper \
 		trickbooter/zookeeper)
 	echo "Started ZOOKEEPER in container $ZOOKEEPER"
 
-	mkdir -p $APPS/cassandra/data
-	mkdir -p $APPS/cassandra/logs
+	mkdir -p $APP_DATA/cassandra/data
+	mkdir -p $APP_DATA/cassandra/logs
 	CASSANDRA=$(docker run \
 		-d \
 		-p 7000:7000 \
@@ -47,12 +48,31 @@ start(){
 		-p 7199:7199 \
 		-p 9160:9160 \
 		-p 9042:9042 \
-		-v $APPS/cassandra/data:/data \
-		-v $APPS/cassandra/logs:/logs \
-		relateiq/cassandra)
+		-v $APP_DATA/cassandra/data:/data \
+		-v $APP_DATA/cassandra/logs:/logs \
+		trickbooter/cassandra)
 	echo "Started CASSANDRA in container $CASSANDRA"
 	
-	
+
+
+	mkdir -p $APP_DATA/kafka/data
+	mkdir -p $APP_DATA/kafka/logs
+	sudo docker rm -f kafka > /dev/null 2>&1 | true 
+	KAFKA=$(docker run \
+		-d \
+		-p 9092:9092 \
+		-v $APP_DATA/kafka/data:/kafka/data \
+		-v $APP_DATA/kafka/logs:/kafka/logs \
+		--name kafka \
+		--link zookeeper:zookeeper \
+		trickbooter/kafka)
+	echo "Started KAFKA in container $KAFKA"
+
+	SHIPYARD=$(docker run \
+		-d \
+		-p 8005:8000 \
+		shipyard/shipyard)
+		
 	#mkdir -p $APPS/elasticsearch/data
 	#mkdir -p $APPS/elasticsearch/logs
 	#ELASTICSEARCH=$(docker run \
@@ -64,24 +84,6 @@ start(){
 	#	trickbooter/elasticsearch)
 	#echo "Started ELASTICSEARCH in container $ELASTICSEARCH"
 
-	mkdir -p $APPS/kafka/data
-	mkdir -p $APPS/kafka/logs
-	sudo docker rm -f kafka > /dev/null 2>&1 | true 
-	KAFKA=$(docker run \
-		-d \
-		-p 9092:9092 \
-		-v $APPS/kafka/data:/data \
-		-v $APPS/kafka/logs:/logs \
-		--name kafka \
-		--link zookeeper:zookeeper \
-		relateiq/kafka)
-	echo "Started KAFKA in container $KAFKA"
-
-	SHIPYARD=$(docker run \
-		-d \
-		-p 8005:8000 \
-		shipyard/shipyard)
-
 	sleep 1
 
 }
@@ -91,12 +93,12 @@ update(){
 	apt-get install -y lxc-docker
 	cp /vagrant/etc/docker.conf /etc/init/docker.conf
 
-	docker pull relateiq/zookeeper
-	docker pull relateiq/redis
-	docker pull relateiq/cassandra
-	docker pull relateiq/elasticsearch
-	docker pull relateiq/mongo
-	docker pull relateiq/kafka
+	docker pull trickbooter/zookeeper
+	docker pull trickbooter/redis
+	docker pull trickbooter/cassandra
+	docker pull trickbooter/elasticsearch
+	docker pull trickbooter/mongo
+	docker pull trickbooter/kafka
 	docker pull shipyard/shipyard
 }
 

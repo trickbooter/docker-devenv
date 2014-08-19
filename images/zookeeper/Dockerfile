@@ -4,18 +4,23 @@ MAINTAINER trickbooter (paul@trickbooter.com)
 RUN apt-get update
 RUN apt-get install -y git curl build-essential make gcc wget
 
-RUN cd /opt && wget http://apache.mirror.serversaustralia.com.au/zookeeper/current/zookeeper-3.4.6.tar.gz
-RUN cd /opt && tar xzf zookeeper-*.tar.gz
-RUN rm /opt/*.tar.gz
-RUN mv /opt/zookeeper-* /opt/zookeeper
+ENV ZK_VER 3.4.6
 
-ADD zoo.cfg /opt/zookeeper/conf/zoo.cfg
-ADD log4j.properties /opt/zookeeper-*/conf/log4j.properties
+ENV INSTALL_ROOT /usr/local
 
-VOLUME [ "/data" ]
-VOLUME [ "/logs" ]
+# Get and unpack Zookeeper
+RUN cd $INSTALL_ROOT && wget http://apache.mirror.serversaustralia.com.au/zookeeper/current/zookeeper-$ZK_VER.tar.gz
+RUN cd $INSTALL_ROOT && tar xzf zookeeper-$ZK_VER.tar.gz
+RUN rm $INSTALL_ROOT/"$ZK_VER".tar.gz
+RUN ln -s $INSTALL_ROOT/zookeeper-$ZK_VER $INSTALL_ROOT/zookeeper
+
+ADD zoo.cfg $INSTALL_ROOT/zookeeper/conf/zoo.cfg
+ADD log4j.properties $INSTALL_ROOT/zookeeper/conf/log4j.properties
+
+VOLUME [ "/zookeeper/data" ]
+VOLUME [ "/zookeeper/logs" ]
 
 EXPOSE 2181
 
-CMD ["/opt/zookeeper/bin/zkServer.sh", "start-foreground"]
+CMD ["$INSTALL_ROOT/zookeeper/bin/zkServer.sh", "start-foreground"]
 

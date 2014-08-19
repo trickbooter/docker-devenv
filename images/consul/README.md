@@ -167,6 +167,8 @@ When running with `cmd:run`, it publishes the DNS port on the Docker bridge. You
 
 	$ echo "DOCKER_OPTS='--dns 172.17.42.1 --dns 8.8.8.8 --dns-search service.consul'" >> /etc/default/docker
 
+On ppstart systems (Ubuntu, Mint) run sudo docker restart to make the changes stick.
+
 #### Runtime Configuration
 
 Although you can extend this image to add configuration files to define services and checks, this container was designed for environments where services and checks can be configured at runtime via the HTTP API. 
