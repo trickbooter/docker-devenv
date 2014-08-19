@@ -22,16 +22,8 @@ stop(){
 
 start(){
 
-	CONSUL=$(docker run \
-		-d \
-		-p 8400:8400 \
-		-p 8500:8500 \
-		-p 8600:53/udp \
-		-h node1 \
-		progrium/consul  \
-		-server \
-		-bootstrap
-	)
+	# Note, this is a Jeff Lindsay project that I have forked
+	CONSUL=$(docker run --rm trickbooter/consul cmd:run 127.0.0.1 -it)
 	echo "Started CONSUL in container $CONSUL"
 
 	mkdir -p $APPS/zookeeper/data
