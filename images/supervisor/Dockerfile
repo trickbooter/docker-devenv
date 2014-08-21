@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:latest
 MAINTAINER trickbooter <paul@trickbooter.com>
 
 ENV TERM linux
@@ -11,9 +11,12 @@ ENV HOME /root
 
 # supervisor installation && 
 # create directory for child images to store configuration in
-RUN mkdir -p /var/log/supervisor && \
+RUN mkdir -p /supervisor/logs && \
     mkdir -p /etc/supervisor/conf.d
 
+# Expose the supervisor logs
+VOLUME ["/supervisor/logs"]
+    
 # supervisor base configuration
 ADD supervisor.conf /etc/supervisor.conf
 

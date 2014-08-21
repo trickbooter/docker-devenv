@@ -23,9 +23,12 @@ stop(){
 start(){
 
 	# Note, this is a Jeff Lindsay project that I have forked
-	# Determine Docker0 Bridge IP
-	# CONSUL=$(docker run --rm trickbooter/consul cmd:run 127.0.0.1 -it)
-	# echo "Started CONSUL in container $CONSUL"
+	# Determine default Host IP
+	HOST_IP=(ip ro | grep $(ip ro | grep 'default' | awk '{print $5}') | grep 'src' | awk '{print $9'})
+	echo "Host IP detected as $HOST_IP"
+	
+	#CONSUL=$(docoker run --rm trickbooter/consul cmd:run $HOST_IP -it)
+	#echo "Started CONSUL in container $CONSUL"
 
 	mkdir -p $APP_DATA/zookeeper/data
 	mkdir -p $APP_DATA/zookeeper/logs
