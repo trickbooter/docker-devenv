@@ -1,5 +1,5 @@
 FROM trickbooter/supervisor
-MAINTAINER trickbooter (paul@trickbooter.com)
+MAINTAINER trickbooter <paul@trickbooter.com>
 
 ENV TERM linux
 
