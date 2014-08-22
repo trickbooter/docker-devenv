@@ -1,0 +1,7 @@
+{
+    "service": {
+        "name": "yarn-mr",
+        "port": 50030,
+        "tags" : ["v2.5.0"]
+    }
+}

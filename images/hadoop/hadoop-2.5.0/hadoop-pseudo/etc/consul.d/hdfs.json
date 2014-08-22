@@ -1,0 +1,7 @@
+{
+    "service": {
+        "name": "hdfs",
+        "port": 9000,
+        "tags" : ["v2.5.0"]
+    }
+}
