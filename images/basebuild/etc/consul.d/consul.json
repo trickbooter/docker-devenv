@@ -1,6 +1,6 @@
 {
   "data_dir": "/var/lib/consul",
-  "datacenter": "dev",
+  "datacenter": "dc1",
   "domain": "consul",
   "enable_syslog": true,
   "rejoin_after_leave": true,

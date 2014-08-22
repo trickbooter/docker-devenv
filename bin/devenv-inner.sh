@@ -22,7 +22,7 @@ stop(){
 
 start(){
 
-	APP_DATA=${APP_DATA:=\/home\/${user}\/docked}
+	APP_DATA=${APP_DATA:=/home/${USER}/docked}
 	mkdir -p ${APP_DATA}
 
 	# Note, this is a Jeff Lindsay project
@@ -38,7 +38,19 @@ start(){
 	
 	# Start up Consul server
 	docker rm -f consul > /dev/null 2>&1 | true
-	CONSUL=$($(docker run --rm progrium/consul cmd:run ${HOST_IP} -itd))
+	CONSUL=$(docker run \
+		  -d \
+		  -p ${HOST_IP}:8300:8300 \
+		  -p ${HOST_IP}:8301:8301 \
+		  -p ${HOST_IP}:8301:8301/udp \
+		  -p ${HOST_IP}:8302:8302 \
+		  -p ${HOST_IP}:8302:8302/udp \
+		  -p ${HOST_IP}:8400:8400 \
+		  -p ${HOST_IP}:8500:8500 \
+		  -p ${DOCKER_BRIDGE_IP}:53:53/udp \
+		  --name consul \
+		  -h ${HOSTNAME} \
+		  progrium/consul -server -advertise ${HOST_IP} -bootstrap)
 	echo "Started CONSUL in container ${CONSUL}"
 	
 	# Start up Zookeeper server
