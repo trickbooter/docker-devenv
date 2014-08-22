@@ -4,9 +4,10 @@
         "port": 7203,
         "tags" : ["v0.8.1.1", "JMX"],
         "check": {
-            "name": "Kafka JMX Check",
+	    "id":"kafka_jmx",
+            "name": "Kafka JMX nc",
             "notes": "Connect to the port internally every 10 seconds",
-            "script": "nc -z -v localhost 7203 >/dev/null 2>&1",
+            "script": "nc -z -v localhost 7203 2>&1",
             "interval": "10s"
         }
     }

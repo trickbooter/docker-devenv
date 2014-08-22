@@ -4,9 +4,10 @@
         "port": 2181,
         "tags" : ["v3.4.2"],
         "check": {
-            "name": "Zookeeper Check",
+	    "id":"zookeper",
+            "name": "Zookeeper nc",
             "notes": "Connect to the port internally every 10 seconds",
-            "script": "nc -z -v localhost 2181 >/dev/null 2>&1",
+            "script": "nc -z -v localhost 2181 2>&1",
             "interval": "10s"
         }
     }

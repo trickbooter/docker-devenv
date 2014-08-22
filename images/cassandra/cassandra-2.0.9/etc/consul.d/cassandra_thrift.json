@@ -1,0 +1,14 @@
+{
+    "service": {
+        "name": "cassandra",
+        "port": 9160,
+        "tags" : ["v2.0.9", "Thrift"],
+        "check": {
+	    "id":"cassandra_thrift",
+            "name": "Cassandra Thrift nc",
+            "notes": "Connect to the port internally every 10 seconds",
+            "script": "nc -z -v localhost 9160 2>&1",
+            "interval": "10s"
+        }
+    }
+}

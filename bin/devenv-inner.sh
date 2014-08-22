@@ -71,8 +71,8 @@ start(){
 	echo "Started ZOOKEEPER in container ${ZOOKEEPER}"
 
 	# Start up Cassandra
-	mkdir -p $APP_DATA/cassandra/data
-	mkdir -p $APP_DATA/cassandra/logs
+	mkdir -p ${APP_DATA}/cassandra/data
+	mkdir -p ${APP_DATA}/cassandra/logs
 	docker rm -f cassandra > /dev/null 2>&1 | true 
 	CASSANDRA=$(docker run \
 		-d \
@@ -92,8 +92,6 @@ start(){
 		trickbooter/cassandra:2.0.9)
 	echo "Started CASSANDRA in container $CASSANDRA"
 	
-	exit
-	
 	# Start up Kafka
 	mkdir -p $APP_DATA/kafka/data
 	mkdir -p $APP_DATA/kafka/logs
@@ -103,6 +101,7 @@ start(){
 		-p 9092:9092 \
 		-v $APP_DATA/kafka/data:/kafka/data \
 		-v $APP_DATA/kafka/logs:/kafka/logs \
+		-e HOST_IP=${HOST_IP} \
 		--dns=${DOCKER_BRIDGE_IP} \
 		--dns=${DNS} \
 		--dns-search=consul \

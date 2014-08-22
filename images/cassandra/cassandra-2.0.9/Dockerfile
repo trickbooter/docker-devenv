@@ -5,6 +5,7 @@ RUN apt-get install -y lsof
 
 ENV CASS_VER 2.0.9
 
+# Get Cassandra
 RUN cd /usr/local && wget http://apache.mirror.serversaustralia.com.au/cassandra/${CASS_VER}/apache-cassandra-${CASS_VER}-bin.tar.gz
 RUN cd /usr/local && tar zxf apache-cassandra-${CASS_VER}-bin.tar.gz
 RUN rm /usr/local/apache-cassandra-${CASS_VER}-bin.tar.gz
@@ -23,6 +24,9 @@ ADD bin/start.sh /usr/local/cassandra/bin/start.sh
 
 # Add supervisor
 ADD  etc/supervisor/conf.d/cassandra.conf /etc/supervisor/conf.d/cassandra.conf
+
+# Consul
+ADD etc/consul.d/cassandra_thrift.json /etc/consul.d/cassandra_thrift.json
 
 RUN chmod 755 /usr/local/cassandra/bin/start.sh
 RUN mkdir -p /cassandra/data
