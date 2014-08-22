@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# Register ZK service with Consul
-
-
-# Start ZK
-exec /usr/local/zookeeper/bin/zkServer.sh start-foreground

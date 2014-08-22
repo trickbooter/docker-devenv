@@ -1,0 +1,13 @@
+{
+    "service": {
+        "name": "kafka_jmx",
+        "port": 7203,
+        "tags" : ["v0.8.1.1", "JMX"],
+        "check": {
+            "name": "Kafka JMX Check",
+            "notes": "Connect to the port internally every 10 seconds",
+            "script": "nc -z -v localhost 7203 >/dev/null 2>&1",
+            "interval": "10s"
+        }
+    }
+}
