@@ -1,0 +1,12 @@
+{
+    "service": {
+        "name": "yarn-rm-webapp",
+        "port": 8088,
+        "tags" : ["v2.5.0"],
+        "check": {
+	    "name":"yarn-rm-webapp nc",
+            "script": "nc -vz localhost 8088 2>&1",
+            "interval": "10s"
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "service": {
+        "name": "yarn-rm-admin",
+        "port": 8033,
+        "tags" : ["v2.5.0"],
+        "check": {
+	    "name":"yarn-rm-admin nc",
+            "script": "nc -vz localhost 8033 2>&1",
+            "interval": "10s"
+        }
+    }
+}

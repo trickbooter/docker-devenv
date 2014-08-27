@@ -1,0 +1,12 @@
+{
+    "service": {
+        "name": "kafka",
+        "port": 9092,
+        "tags" : ["v0.8.1.1", "Thrift"],
+        "check": {
+            "name": "Kafka Thrift nc",
+            "script": "nc -zv localhost 9092 2>&1",
+            "interval": "10s"
+        }
+    }
+}

@@ -2,6 +2,11 @@
     "service": {
         "name": "hdfs",
         "port": 9000,
-        "tags" : ["v2.5.0"]
+        "tags" : ["v2.5.0"],
+        "check": {
+	    "name":"hdfs nc",
+            "script": "nc -vz localhost 9000 2>&1",
+            "interval": "10s"
+        }
     }
 }

@@ -1,0 +1,12 @@
+{
+    "service": {
+        "name": "yarn-node-webapp",
+        "port": 8042,
+        "tags" : ["v2.5.0"],
+        "check": {
+	    "name":"yarn-node-webapp nc",
+            "script": "nc -vz localhost 8042 2>&1",
+            "interval": "10s"
+        }
+    }
+}

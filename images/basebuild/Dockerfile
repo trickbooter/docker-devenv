@@ -24,8 +24,10 @@ RUN \
                          python-pip \
                          python-software-properties \
                          software-properties-common \
-                         ssh \
+                         openssh-server \
+                         openssh-client \
                          supervisor \
+                         tar \
                          unzip \
                          wget && \
   apt-get clean
@@ -33,11 +35,11 @@ RUN \
 # Install python dependencies
 RUN pip install passport
 
-# Prepare Java
-RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list
-RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
-RUN apt-get update
+# Prepare Java package source
+RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list && \
+    echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" | tee -a /etc/apt/sources.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
+    apt-get update
 
 # auto accept oracle jdk license
 RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
@@ -48,11 +50,12 @@ ENV PATH $PATH:$JAVA_HOME/bin
 
 # Add the root .ssh files
 RUN mkdir -m 0700 -p /root/.ssh
-ADD ssh/id_rsa /root/.ssh/id_rsa
+ADD ssh/id_rsa /root/.ssh/id_rsa 
 ADD ssh/id_rsa.pub /root/.ssh/id_rsa.pub
 ADD ssh/ssh_config /root/.ssh/config
+
 RUN \
-  chmod 0700 /root/.ssh/id_rsa && \
+  chmod 0700 /root/.ssh/id_rsa  && \
   cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys && \
   mkdir /var/run/sshd && \
   rm -f /etc/cron.daily/standard
@@ -93,4 +96,4 @@ RUN mkdir -p /supervisor/logs
 VOLUME ["/var/log/supervisor"]
 
 # Run Supervisord
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

@@ -1,0 +1,12 @@
+{
+    "service": {
+        "name": "yarn-rm-scheduler",
+        "port": 8030,
+        "tags" : ["v2.5.0"],
+        "check": {
+	    "name":"yarn-rm-scheduler nc",
+            "script": "nc -vz localhost 8030 2>&1",
+            "interval": "10s"
+        }
+    }
+}

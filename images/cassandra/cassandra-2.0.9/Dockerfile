@@ -14,12 +14,12 @@ RUN ln -s /usr/local/apache-cassandra-${CASS_VER} /usr/local/cassandra
 ENV CASSANDRA_HOME /usr/local/cassandra
 
 # Add configuration
-ADD conf/cassandra.yaml /usr/local/cassandra/conf/cassandra.yaml
-ADD conf/log4j-server.properties /usr/local/cassandra/conf/log4j-server.properties
-ADD conf/cassandra-topology.properties /usr/local/cassandra/conf/cassandra-topology.properties
+ADD cassandra/conf/cassandra.yaml /usr/local/cassandra/conf/cassandra.yaml
+ADD cassandra/conf/log4j-server.properties /usr/local/cassandra/conf/log4j-server.properties
+ADD cassandra/conf/cassandra-topology.properties /usr/local/cassandra/conf/cassandra-topology.properties
+ADD cassandra/conf/cassandra-env.sh /usr/local/cassandra/conf/cassandra-env.sh
 
 # Add helpers
-ADD conf/cassandra-env.sh /usr/local/cassandra/conf/cassandra-env.sh
 ADD bin/start.sh /usr/local/cassandra/bin/start.sh
 
 # Add supervisor

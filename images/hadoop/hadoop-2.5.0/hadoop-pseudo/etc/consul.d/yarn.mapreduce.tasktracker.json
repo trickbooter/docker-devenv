@@ -1,0 +1,12 @@
+{
+    "service": {
+        "name": "yarn-mr-tasktracker",
+        "port": 50060,
+        "tags" : ["v2.5.0"],
+        "check": {
+	    "name":"yarn-mr-tasktracker nc",
+            "script": "nc -vz localhost 50060 2>&1",
+            "interval": "10s"
+        }
+    }
+}

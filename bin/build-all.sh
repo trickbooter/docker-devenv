@@ -4,7 +4,7 @@
 # zookeeper/zookeeper-3.4.6|zookeeper|3.4.6 < path=zookeeper/zookeeper-3.4.6, imagename=zookeeper, tag=3.4.6
 # zookeeper/zookeeper-3.4.6|zookeeper < path=zookeeper/zookeeper-3.4.6, imagename=zookeeper, tag=latest
 
-CONTAINERS=( basebuild zookeeper,zookeeper/zookeeper-3.4.6,3.4.6 cassandra,cassandra/cassandra-2.0.9,2.0.9 kafka,kafka/kafka-0.8.1.1,0.8.1.1 )
+CONTAINERS=( basebuild zookeeper,zookeeper/zookeeper-3.4.6,3.4.6 kafka,kafka/kafka-0.8.1.1,0.8.1.1 hadoop-base,hadoop/hadoop-2.5.0/hadoop-base,2.5.0 hadoop-pseudo,hadoop/hadoop-2.5.0/hadoop-pseudo,2.5.0 spark-yarn,spark/spark-1.0.2/spark-yarn,1.0.2 cassandra,cassandra/cassandra-2.0.9,2.0.9 )
 
 for CONTAINER in "${CONTAINERS[@]}"
 do

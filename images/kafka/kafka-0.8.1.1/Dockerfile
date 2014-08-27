@@ -14,14 +14,13 @@ RUN mkdir -p /kafka/data
 RUN mkdir -p /kafka/logs
 
 # Add Config
-ADD config/server.properties /opt/kafka/config/server.properties
+ADD kafka/config/server.properties /opt/kafka/config/server.properties
 
 # Add Supervior
 ADD etc/supervisor/conf.d/kafka.conf /etc/supervisor/conf.d/kafka.conf
 
 # Consul
-#ADD etc/consul.d/kafka_jmx.json /etc/consul.d/kafka_jmx.json
-ADD etc/consul.d/kafka_thrift.json /etc/consul.d/kafka_thrift.json
+ADD etc/consul.d/kafka.json /etc/consul.d/kafka.json
 
 
 VOLUME [ "/kafka/data" ]

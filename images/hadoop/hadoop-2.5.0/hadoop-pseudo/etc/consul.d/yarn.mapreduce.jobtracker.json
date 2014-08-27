@@ -1,0 +1,12 @@
+{
+    "service": {
+        "name": "yarn-mr-jobtracker",
+        "port": 50030,
+        "tags" : ["v2.5.0"],
+        "check": {
+	    "name":"yarn-mr-jobtracker nc",
+            "script": "nc -vz localhost 50030 2>&1",
+            "interval": "10s"
+        }
+    }
+}

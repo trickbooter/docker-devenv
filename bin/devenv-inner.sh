@@ -69,6 +69,28 @@ start(){
 		-h zookeeper \
 		trickbooter/zookeeper:3.4.6)
 	echo "Started ZOOKEEPER in container ${ZOOKEEPER}"
+	
+	docker rm -f hadoop > /dev/null 2>&1 | true 
+	HADOOP=$(docker run \
+		-d \
+		-p 8030:8030 \
+		-p 8031:8031 \
+		-p 8032:8032 \
+		-p 8033:8033 \
+		-p 8042:8042 \
+		-p 8088:8088 \
+		-p 9000:9000 \
+		-p 50030:50030 \
+		-p 50060:50060 \
+		-p 50070:50070 \
+		-e HOST_IP=${HOST_IP} \
+		--dns=${DOCKER_BRIDGE_IP} \
+		--dns=${DNS} \
+		--dns-search=consul \
+		--name hadoop \
+		-h hadoop \
+		trickbooter/spark-yarn:1.0.2)
+	echo "Started HADOOP in container ${HADOOP}"
 
 	# Start up Cassandra
 	mkdir -p ${APP_DATA}/cassandra/data
@@ -129,7 +151,6 @@ start(){
 	#echo "Started ELASTICSEARCH in container $ELASTICSEARCH"
 
 	sleep 1
-
 }
 
 update(){

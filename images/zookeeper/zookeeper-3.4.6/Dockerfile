@@ -10,8 +10,8 @@ RUN rm /usr/local/zookeeper-${ZK_VER}.tar.gz
 RUN ln -s /usr/local/zookeeper-${ZK_VER} /usr/local/zookeeper
 
 # Configuration
-ADD conf/zoo.cfg /usr/local/zookeeper/conf/zoo.cfg
-ADD conf/log4j.properties /usr/local/zookeeper/conf/log4j.properties
+ADD zookeeper/conf/zoo.cfg /usr/local/zookeeper/conf/zoo.cfg
+ADD zookeeper/conf/log4j.properties /usr/local/zookeeper/conf/log4j.properties
 
 # Helpers
 
